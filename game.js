@@ -21,8 +21,8 @@ const PADDLE_BOTTOM_MARGIN = 50;
 const PADDLE_HEIGHT = 5;
 const BALL_RADIUS = 8;
 const SCORE_INC = 10;
-const WIN_LVL = 4;
-let ball_speed = 5;
+const WIN_LVL = 3;
+let ball_speed = 6;
 let current_game_lifes = 3;
 let current_game_score = 0;
 let current_game_level = 1;
@@ -229,8 +229,8 @@ function reset_positions(){
     paddle.pos_y =  cvs.height - PADDLE_HEIGHT - PADDLE_BOTTOM_MARGIN;
     ball.pos_x = cvs.width/2;
     ball.pos_y = paddle.pos_y - BALL_RADIUS;
-    ball.delta_y = -ball.delta_y;  // going up same as before
-    ball.delta_x = Math.floor(Math.random() * ((ball_speed * 0.75) - (-ball_speed * 0.75) + 1)) + (-ball_speed * 0.75); // random between [-3, 3]
+    ball.delta_y = -(ball.speed * 0.75);  // going up same as before
+    ball.delta_x = Math.floor(Math.random() * ((ball.speed * 0.75) - (-ball.speed * 0.75) + 1)) + (-ball.speed * 0.75); // random between [-3, 3]
     if (!check_lose() && !check_win()){
         game_in_progress = false;
         game_progress.style.display = "block";
@@ -258,7 +258,7 @@ function reset_positions(){
 // BRICKS 
 // Create array of arrays, where each internal array is current level bricks (lvl 1 == index 0)
 let brick_lvls = create_bricks_levels();
-console.log(brick_lvls);
+// console.log(brick_lvls);
 function create_bricks_levels(){
     let levels = [lvl_1(), lvl_2(), lvl_3(), lvl_4()];
     function lvl_1(){
@@ -327,7 +327,7 @@ function create_bricks_levels(){
 
 // Create array of arrays, where each internal array is current level hot spots (lvl 1 == index 0). If you hit hotspot, you lose points. Hit it 3 times and you lose a life
 let hot_bricks_lvls = create_hot_bricks_levels();
-console.log(hot_bricks_lvls);
+// console.log(hot_bricks_lvls);
 function create_hot_bricks_levels(){
     let levels = [[], [], lvl_3(), lvl_4()];
     function lvl_3(){
@@ -374,10 +374,10 @@ function level_checker(lvl){
     }
     // if all bricks are destroyed, lvl up
     if (lvl_done) {
-        ball.speed += 1;
-        reset_positions();
+        ball.speed += 1.5;
         current_game_level += 1;
         hot_brick_counter = 0;
+        reset_positions();
     }
 }
 
